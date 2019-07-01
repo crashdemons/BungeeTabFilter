@@ -29,7 +29,7 @@ public class BTFPlugin extends BasicPlugin {
     private volatile boolean ready = false;
 
     
-    private boolean dumpFiltering = false;
+    public boolean dumpFiltering = false;
     
     public BTFPlugin() {
         instance=this;
@@ -70,7 +70,11 @@ public class BTFPlugin extends BasicPlugin {
     }
 */
 
-    
+    public void loadConfig(){
+        saveDefaultConfig();//fails silently if config exists
+        reloadConfig();
+        filters.load(getConfig());
+    }
     
     
     
@@ -78,6 +82,9 @@ public class BTFPlugin extends BasicPlugin {
     @Override
     public void onEnable() {
         super.onEnable();
+        getProxy().getPluginManager().registerCommand(this, new AZTabReload());
+        getProxy().getPluginManager().registerCommand(this, new AZTabDump());
+        getLogger().info("Registered commands");
         getProxy().getPluginManager().registerListener(this, this);
         getLogger().info("Registered tabcompleteresponse event handler");
         filters.load(getConfig());
@@ -98,7 +105,7 @@ public class BTFPlugin extends BasicPlugin {
     
     @EventHandler(priority=EventPriority.HIGHEST)
     public void onTabCompleteResponse(TabCompleteResponseEvent event) {
-        getLogger().info("Filtering tabcomplete response");
+        if(dumpFiltering) getLogger().info("Filtering tabcomplete response");
         Connection recv=event.getReceiver();
         ProxiedPlayer player = getPlayerFromConnection(recv);
         if(player==null){//if we don't know who this is, we don't show them anything.
