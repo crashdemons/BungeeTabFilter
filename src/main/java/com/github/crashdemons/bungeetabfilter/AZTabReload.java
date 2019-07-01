@@ -5,7 +5,6 @@
  */
 package com.github.crashdemons.bungeetabfilter;
 
-import com.github.crashdemons.util.BungeeInfo;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,7 +20,7 @@ public class AZTabReload extends Command{
   }
   @Override
   public void execute(CommandSender commandSender, String[] strings) {
-      if(BungeeInfo.hasPermission(commandSender,"aztectabcompleter.reload")){ commandSender.sendMessage(new TextComponent(ChatColor.RED + "You don't have permission to run this command.")); return; }
+      if(!commandSender.hasPermission("aztectabcompleter.reload")){ commandSender.sendMessage(new TextComponent(ChatColor.RED + "You don't have permission to run this command.")); return; }
       BTFPlugin.instance.loadConfig();
       commandSender.sendMessage(new TextComponent(ChatColor.GREEN + "[AZTab] Config reloaded."));
   }

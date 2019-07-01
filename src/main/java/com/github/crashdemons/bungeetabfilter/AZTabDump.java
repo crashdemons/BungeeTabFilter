@@ -5,7 +5,6 @@
  */
 package com.github.crashdemons.bungeetabfilter;
 
-import com.github.crashdemons.util.BungeeInfo;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,7 +22,7 @@ public class AZTabDump extends Command {
 
     @Override
     public void execute(CommandSender commandSender, String[] strings) {
-        if (BungeeInfo.hasPermission(commandSender,"aztectabcompleter.dump")) {
+        if (!commandSender.hasPermission("aztectabcompleter.dump")) {
             commandSender.sendMessage(new TextComponent(ChatColor.RED + "You don't have permission to run this command."));
             return;
         }
